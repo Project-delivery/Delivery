@@ -1,0 +1,15 @@
+﻿@model List<Delivery.Domain.Entity.User>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+@foreach (var user in Model)
+{
+    <p>@user.Name</p>
+    <p>@user.Password</p>
+    <p>@user.Role</p>
+    <p>@user.Id</p>
+
+}
