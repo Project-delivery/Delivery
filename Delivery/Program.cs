@@ -2,6 +2,8 @@ using Delivery.DAL;
 using Delivery.DAL.Interfaces;
 using Delivery.DAL.Repositories;
 using Delivery.Domain;
+using Delivery.Service.Implementation;
+using Delivery.Service.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

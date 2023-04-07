@@ -1,21 +1,23 @@
 ﻿using Delivery.DAL.Interfaces;
 using Delivery.DAL.Repositories;
 using Delivery.Domain.Entity;
+using Delivery.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Delivery.Controllers;
 
 public class UserController : Controller
 {
-    public UserController()
+    private readonly IUserService _userService;
+    public UserController(IUserService userService)
     {
-        
+        _userService = userService;
     }
 
     [HttpGet]
-    public IActionResult GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        
-        return View();
+        var response = await _userService.GetUserByName("admin");
+        return View(new List<User> () { response.Data });
     }
 }
