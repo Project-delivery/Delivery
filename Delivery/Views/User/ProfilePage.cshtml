@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+@using Delivery.Domain.Enum
+@model Delivery.Domain.Entity.User
+
+<div class="text-center">
+    @if (@Model.Role == Role.Validator)
+    {
+        <h1 class="display-4">Welcome validator</h1>
+        <h1>@Model.Name</h1>
+    }
+    else if (@Model.Role == Role.Admin)
+    {
+        <h1 class="display-4">Welcome admin</h1>
+        <h1>@Model.Name</h1> 
+    }
+    else if (@Model.Role == Role.Worker)
+    {
+        <h1 class="display-4">Welcome worker</h1>
+        <h1>@Model.Name</h1>
+    }
+
+</div>
