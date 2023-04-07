@@ -32,6 +32,6 @@ public class UserController : Controller
         if (_user.Data==null) return RedirectToAction("Login", "User");
         if (_user.Data.Password ==null) return RedirectToAction("Login", "User");
         if (_user.Data.Password != User.Password) return RedirectToAction("Login", "User");
-        return View(User);
+        return View(_user.Data);
     }
 }
