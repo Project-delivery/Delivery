@@ -1,16 +1,19 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices.ComTypes;
-using Delivery.DAL.Interfaces;
 using Delivery.DAL.Repositories;
 using Delivery.Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Delivery.Models;
 
+
 namespace Delivery.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+
+    //private readonly UserRepository _userRepository;
+
+    public async Task<IActionResult> Index()
     {
         return View();
     }

@@ -5,17 +5,17 @@
 @model Delivery.Domain.Entity.User
 
 <div class="text-center">
-    @if (@Model.Role == Role.Validator)
+    @if (@Model.Role == "validator")
     {
         <h1 class="display-4">Welcome validator</h1>
         <h1>@Model.Name</h1>
     }
-    else if (@Model.Role == Role.Admin)
+    else if (@Model.Role == "admin")
     {
         <h1 class="display-4">Welcome admin</h1>
         <h1>@Model.Name</h1> 
     }
-    else if (@Model.Role == Role.Worker)
+    else if (@Model.Role == "worker")
     {
         <h1 class="display-4">Welcome worker</h1>
         <h1>@Model.Name</h1>

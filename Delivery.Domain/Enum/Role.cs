@@ -4,5 +4,6 @@ public enum Role
 {
     Admin = 0,
     Worker = 1,
-    Validator = 2
+    Validator = 2,
+    None = 3
 }

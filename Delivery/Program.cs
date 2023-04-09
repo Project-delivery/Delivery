@@ -1,17 +1,20 @@
 using Delivery.DAL;
-using Delivery.DAL.Interfaces;
 using Delivery.DAL.Repositories;
 using Delivery.Domain;
-using Delivery.Service.Implementation;
-using Delivery.Service.Interfaces;
+//using Delivery.Service.Implementation;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+/*var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseNpgsql(connection);
+});*/
 builder.Services.AddMvc();
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

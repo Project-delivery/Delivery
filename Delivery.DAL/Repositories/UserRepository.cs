@@ -1,29 +1,45 @@
-﻿using Delivery.DAL.Interfaces;
-using Delivery.Domain.Entity;
-using Delivery.Domain.Enum;
-using System.Collections.Generic;
+﻿using Delivery.Domain.Entity;
+using Npgsql;
 
 namespace Delivery.DAL.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository
 {
-    private List<User> _users = new List<User>()
-    {
-        new User() { Id = 0, Name = "admin", Password = "1234", Role = Role.Admin },
-        new User() { Id = 1, Name = "validator", Password = "1234", Role = Role.Validator },
-        new User() { Id = 2, Name = "worker", Password = "1234", Role = Role.Worker }
-    };
-    User IUserRepository.GetUserByName(string name)
-    {
-        return _users.Where(user => user.Name == name).FirstOrDefault();
-    }
+    private static readonly string ConnectionString = "Host=localhost;port=5432;Username=admin;Password=admin;Database=practice";
 
-    User IUserRepository.Get(int id)
+    public static async Task<User> GetUserByName(string name)
     {
-        return _users.Where(user => user.Id == id).FirstOrDefault();
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+        
+        await using var command = new NpgsqlCommand($"SELECT * FROM users WHERE login = (@p1)", dataSource)
+        {
+            Parameters =
+            {
+                new("p1", name)
+            }
+        };
+        await using var reader = await command.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            var res = new User()
+            {
+                Id = reader.GetInt32(0),
+                
+                Name = name,
+                Password = reader.GetString(2),
+                Role = reader.GetString(3)
+            };
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return res;
+        }
+        else
+        { 
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return new User() { Id = -1, Name = null, Password = null, Role = null };
+        }
     }
-    List<User> IUserRepository.Select()
-    {
-        return _users;
-    }
+    
 }
