@@ -1,6 +1,8 @@
-﻿using Delivery.DAL.Repositories;
+﻿using System.Security.Claims;
 using Delivery.Domain.Entity;
+using Delivery.Domain.Enum;
 using Delivery.Service.Implementation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Delivery.Controllers;
@@ -21,8 +23,14 @@ public class UserController : Controller
         return View(_user.Data);
     }
 
-    /*public IActionResult Register()
+
+    private ClaimsIdentity Authenticate(User user)
     {
-        return View();
-    }*/
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Role)
+        };
+        return new ClaimsIdentity(claims, "");
+    }
 }
