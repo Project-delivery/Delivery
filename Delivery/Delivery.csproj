@@ -16,4 +16,10 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\User\GetUsers.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\User\Login.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\User\ProfilePage.cshtml" />
+    </ItemGroup>
+
 </Project>
