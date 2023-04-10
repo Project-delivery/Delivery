@@ -49,6 +49,43 @@ public class AccountService
         }
     }
 
+    public static async Task<BaseResponse<ClaimsIdentity>> Login(LoginViewModel model)
+    {
+        try
+        {
+            var user = await UserRepository.GetUserByName(model.Name);
+            if (user == null)
+            {
+                return new BaseResponse<ClaimsIdentity>()
+                {
+                    Description = "Пользователь не найден"
+                };
+            }
+
+            if (user.Password != model.Password)
+            {
+                return new BaseResponse<ClaimsIdentity>()
+                {
+                    Description = "Неверный пароль"
+                };
+            }
+
+            var result = Authenticate(user);
+            return new BaseResponse<ClaimsIdentity>()
+            {
+                Data = result,
+                StatusCode = StatusCode.OK
+            };
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<ClaimsIdentity>()
+            {
+                Description = ex.Message,
+                StatusCode = StatusCode.InternalServerError
+            };
+        }
+    }
 
     private static ClaimsIdentity Authenticate(User user)
     {

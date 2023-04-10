@@ -1,9 +1,13 @@
-﻿using System.Net;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using Delivery.Domain.Entity;
+using Delivery.Domain.jwt;
 using Delivery.Domain.ViewModel.Account;
 using Delivery.Service.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Delivery.Controllers;
 
@@ -32,13 +36,32 @@ public class AccountController : Controller
         return View();
     }
 
-    public async Task<IActionResult> ProfilePage(User User)
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel model)
     {
-        var _user = await UserService.GetUserByName(User.Name);
-        if (_user.Data==null) return RedirectToAction("Login", "Account");
-        if (_user.Data.Password ==null) return RedirectToAction("Login", "Account");
-        if (_user.Data.Password != User.Password) return RedirectToAction("Login", "Account");
-        return View(_user.Data);
+        if (ModelState.IsValid)
+        {
+            var response = await AccountService.Login(model);
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                var now = DateTime.UtcNow;
+                var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE, 
+                    notBefore: now, 
+                    claims: response.Data.Claims, 
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)), 
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+                var _response = new
+                {
+                    access_token = encodedJwt,
+                    Name = response.Data.Name
+                };
+                return Json(_response);
+            }
+        }
+        return BadRequest(new {errorText="Invalid user name or password"});
     }
 
 }

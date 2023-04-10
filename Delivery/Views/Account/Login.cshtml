@@ -2,11 +2,11 @@
     ViewData["Title"] = "Login";
 }
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model Delivery.Domain.Entity.User
+@model Delivery.Domain.ViewModel.Account.LoginViewModel
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <form asp-action="ProfilePage" asp-controller="Account">
+    <form asp-action="Login" asp-controller="Account">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div>
             <div class="form-group">
