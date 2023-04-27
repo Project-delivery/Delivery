@@ -5,6 +5,7 @@ using Delivery.Domain.jwt;
 using Delivery.Domain.ViewModel.Account;
 using Delivery.Service.Implementation;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -37,11 +38,11 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model)
+    public async Task<IActionResult> Login(string Name, string Password)
     {
         if (ModelState.IsValid)
         {
-            var response = await AccountService.Login(model);
+            var response = await AccountService.Login(Name, Password);
             if (response.StatusCode == Domain.Enum.StatusCode.OK)
             {
                 var now = DateTime.UtcNow;

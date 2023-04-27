@@ -2,7 +2,6 @@
 using Delivery.Domain.Enum;
 
 namespace Delivery.Domain.Entity;
-[Table("users")]
 public class User
 {
     public int Id { get; set; }

@@ -1,12 +1,30 @@
 ﻿using Delivery.Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
 namespace Delivery.DAL.Repositories;
 
 public class UserRepository
 {
-    private static readonly string ConnectionString = "Host=localhost;port=5432;Username=admin;Password=admin;Database=practice";
+    private static readonly string ConnectionString = "Host=localhost;port=5432;Username=postgres;Password=998244353sql;Database=test";
+    /*static private ApplicationDbContext _db;
+    public static async Task<List<User> > GetUsers()
+    {
+        var _users = await _db.Users.ToListAsync();
+        return _users;
+    }
 
+    public static async Task<User?> GetUserByName(string name)
+    {
+        var _user = await _db.Users.FirstOrDefaultAsync(u => u.Name == name);
+        return _user;
+    }
+
+    public static async Task<bool> Create(User _user)
+    {
+        return true;
+    }*/
+    
     public static async Task<User> GetUserByName(string name)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
@@ -74,3 +92,4 @@ public class UserRepository
     }
     
 }
+

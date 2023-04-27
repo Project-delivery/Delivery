@@ -49,11 +49,11 @@ public class AccountService
         }
     }
 
-    public static async Task<BaseResponse<ClaimsIdentity>> Login(LoginViewModel model)
+    public static async Task<BaseResponse<ClaimsIdentity>> Login(string Name, string Password)
     {
         try
         {
-            var user = await UserRepository.GetUserByName(model.Name);
+            var user = await UserRepository.GetUserByName(Name);
             if (user == null)
             {
                 return new BaseResponse<ClaimsIdentity>()
@@ -62,7 +62,7 @@ public class AccountService
                 };
             }
 
-            if (user.Password != model.Password)
+            if (user.Password != Password)
             {
                 return new BaseResponse<ClaimsIdentity>()
                 {
