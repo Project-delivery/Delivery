@@ -57,7 +57,7 @@ public class AccountController : Controller
                 var _response = new
                 {
                     access_token = encodedJwt,
-                    Name = response.Data.Name
+                    Name = response.Data.Name 
                 };
                 return Json(_response);
             }

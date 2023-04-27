@@ -64,7 +64,7 @@ public class AccountService
 
             if (user.Password != Password)
             {
-                return new BaseResponse<ClaimsIdentity>()
+                return new BaseResponse<ClaimsIdentity>() 
                 {
                     Description = "Неверный пароль"
                 };

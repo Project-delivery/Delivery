@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
         builder => builder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
-});
+}); 
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
