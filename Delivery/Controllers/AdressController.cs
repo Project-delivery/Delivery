@@ -15,11 +15,28 @@ public class AdressController : Controller
         {
             return Json(response.Data);
         }
-        else return BadRequest(new {errorText="Invalid request"});
+        return BadRequest(new {errorText="Invalid request"});
     }
 
     [HttpGet]
     public IActionResult GetDistrictsByName()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> GetCitiesByName(string Name)
+    {
+        var response = await AdressService.GetCitiesByDistrict(Name);
+        if (response.StatusCode == Domain.Enum.StatusCode.OK)
+        {
+            return Json(response.Data);
+        }
+        return BadRequest(new {errorText="Invalid request"});
+    }
+    
+    [HttpGet]
+    public IActionResult GetCitiesByName()
     {
         return View();
     }

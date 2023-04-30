@@ -34,4 +34,31 @@ public class AdressService
             };
         }
     }
+
+    public static async Task<BaseResponse<List<City>>> GetCitiesByDistrict(string _district)
+    {
+        var baseResponse = new BaseResponse<List<City>>();
+        try
+        {
+            var cities = await AdressRepository.GetCitiesByDistrict(_district);
+            if (cities == null)
+            {
+                baseResponse.Description = "Городов не найдено";
+                baseResponse.StatusCode = StatusCode.OK;
+                return baseResponse;
+            }
+
+            baseResponse.Data = cities;
+            baseResponse.StatusCode = StatusCode.OK;
+            return baseResponse;
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<List<City>>()
+            {
+                Description = $"[GetCitiesByDistrict] : {ex.Message}"
+            };
+        }
+    }
+
 }

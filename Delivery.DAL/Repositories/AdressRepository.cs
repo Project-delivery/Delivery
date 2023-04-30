@@ -39,6 +39,39 @@ public class AdressRepository
         }
     }
     
+    private static async Task<District> GetDistrictByName(string name)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+        
+        await using var command = new NpgsqlCommand($"SELECT * FROM districts WHERE name = (@p1)", dataSource)
+        {
+            Parameters =
+            {
+                new("p1", name)
+            }
+        };
+        await using var reader = await command.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            var res = new District()
+            {
+                Id = reader.GetInt32(0),
+                Name = name,
+                Id_regions = reader.GetInt32(2)
+            };
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return res;
+        }
+        else
+        { 
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return new District() { Id = -1, Name = null, Id_regions = -1};
+        }
+    }
+    
     public static async Task<List<District> > GetDistrictByRegion(string region)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
@@ -61,6 +94,37 @@ public class AdressRepository
             res.Add(
                 new District(){Id = reader.GetInt32(i), Name = reader.GetString(i+1), Id_regions = reader.GetInt32(i+2)}
                 );
+        }
+        return res;
+    }
+
+    public static async Task<List<City>> GetCitiesByDistrict(string district)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+
+        District _district = await GetDistrictByName(district);
+        
+        await using var command = new NpgsqlCommand($"SELECT * FROM cities WHERE district_id = (@p1)", dataSource)
+        {
+            Parameters =
+            {
+                new("p1", _district.Id)
+            }
+        };
+        await using var reader = await command.ExecuteReaderAsync();
+        var res = new List<City>() { };
+        int i = 0;
+        while (await reader.ReadAsync())
+        {
+            
+            res.Add(
+                new City()
+                {
+                    Id = reader.GetInt32(i),
+                    Name = reader.GetString(i+1)
+                }
+            );
         }
         return res;
     }
