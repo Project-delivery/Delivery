@@ -35,7 +35,7 @@ public class AccountService
             return new BaseResponse<ClaimsIdentity>()
             {
                 Data = result,
-                Description = "Оъект доюавлен",
+                Description = "Оъект добавлен",
                 StatusCode = StatusCode.OK
             };
         }
