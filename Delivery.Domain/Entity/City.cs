@@ -7,5 +7,5 @@ public class City
     public string CityCategory { get; set; }
     public string CategoryName { get; set; }
     public int Id_district { get; set; }
-    public int DeputatId { get; set; }
+    public string DeputatId { get; set; }
 }

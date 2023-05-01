@@ -9,7 +9,7 @@ namespace Delivery.Service.Implementation;
 
 public class AdressService
 {
-    public static async Task<BaseResponse<List<District>>> GetDistrictByRegion(string _region)
+    public static async Task<BaseResponse<List<District>>> GetDistrictByRegion(int _region)
     {
         var baseResponse = new BaseResponse<List<District>>();
         try
@@ -35,7 +35,7 @@ public class AdressService
         }
     }
 
-    public static async Task<BaseResponse<List<City>>> GetCitiesByDistrict(string _district)
+    public static async Task<BaseResponse<List<City>>> GetCitiesByDistrict(int _district)
     {
         var baseResponse = new BaseResponse<List<City>>();
         try
@@ -57,6 +57,58 @@ public class AdressService
             return new BaseResponse<List<City>>()
             {
                 Description = $"[GetCitiesByDistrict] : {ex.Message}"
+            };
+        }
+    }
+    
+    public static async Task<BaseResponse<List<Street>>> GetStreetsByCity(int city)
+    {
+        var baseResponse = new BaseResponse<List<Street>>();
+        try
+        {
+            var streets = await AdressRepository.GetStreetsByCity(city);
+            if (streets == null)
+            {
+                baseResponse.Description = "Улиц не найдено";
+                baseResponse.StatusCode = StatusCode.OK;
+                return baseResponse;
+            }
+
+            baseResponse.Data = streets;
+            baseResponse.StatusCode = StatusCode.OK;
+            return baseResponse;
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<List<Street>>()
+            {
+                Description = $"[GetStreetsByCity] : {ex.Message}"
+            };
+        }
+    }
+    
+    public static async Task<BaseResponse<List<Adress>>> GetHouseByStreet(int street)
+    {
+        var baseResponse = new BaseResponse<List<Adress>>();
+        try
+        {
+            var houses = await AdressRepository.GetHouseByStreet(street);
+            if (houses == null)
+            {
+                baseResponse.Description = "Домов не найдено";
+                baseResponse.StatusCode = StatusCode.OK;
+                return baseResponse;
+            }
+
+            baseResponse.Data = houses;
+            baseResponse.StatusCode = StatusCode.OK;
+            return baseResponse;
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<List<Adress>>()
+            {
+                Description = $"[GetStreetsByCity] : {ex.Message}"
             };
         }
     }
