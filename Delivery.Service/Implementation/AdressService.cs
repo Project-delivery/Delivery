@@ -113,4 +113,29 @@ public class AdressService
         }
     }
 
+    public static async Task<BaseResponse<List<Region>>> GetRegion()
+    {
+        var baseResponse = new BaseResponse<List<Region>>();
+        try
+        {
+            var regions = await AdressRepository.GetRegions();
+            if (regions == null)
+            {
+                baseResponse.Description = "Регионов не найдено";
+                baseResponse.StatusCode = StatusCode.OK;
+                return baseResponse;
+            }
+
+            baseResponse.Data = regions;
+            baseResponse.StatusCode = StatusCode.OK;
+            return baseResponse;
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<List<Region>>()
+            {
+                Description = $"[GetRegions] : {ex.Message}"
+            };
+        }
+    }
 }

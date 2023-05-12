@@ -226,4 +226,26 @@ public class AdressRepository
         return res;
     }
 
+    public static async Task<List<Region>> GetRegions()
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+
+        await using var command = new NpgsqlCommand($"SELECT * FROM regions", dataSource);
+        await using var reader = await command.ExecuteReaderAsync();
+        var res = new List<Region>() { };
+        int i = 0;
+        while (await reader.ReadAsync())
+        {
+            
+            res.Add(
+                new Region()
+                {
+                    Id = reader.GetInt32(i),
+                    Name = reader.GetString(i+1)
+                }
+            );
+        }
+        return res;
+    }
 }
