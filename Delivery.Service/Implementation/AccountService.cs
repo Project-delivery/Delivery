@@ -26,8 +26,9 @@ public class AccountService
             user = new User()
             {
                 Name = model.Name,
-                Role = "worker",
-                Password = model.Password
+                Role = model.Role,
+                Password = model.Password,
+                Adress = model.Id_adress
             };
 
             await UserRepository.Create(user);

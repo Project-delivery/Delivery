@@ -20,4 +20,8 @@ public class RegisterViewModel
     [Required(ErrorMessage = "Укажите пароль")]
     [Compare("Password", ErrorMessage = "Пароли не совпадают")]
     public string PasswordConfirm { get; set; }
+    
+    public string Role { get; set; }
+    
+    public int Id_adress { get; set; }
 }

@@ -16,6 +16,11 @@
                 <span asp-validation-for="Name" />
             </div>
             <div class="form-group">
+                <label asp-for="Role">Введите роль</label>
+                <input type="text" asp-for="Role" />
+                <span asp-validation-for="Role" />
+            </div>
+            <div class="form-group">
                 <label asp-for="Password">Введите пароль</label>
                 <input asp-for="Password" type = "password" />
                 <span asp-validation-for="Password" />
@@ -24,6 +29,11 @@
                 <label asp-for="PasswordConfirm">Повторите пароль</label>
                 <input asp-for="PasswordConfirm" type = "password" />
                 <span asp-validation-for="PasswordConfirm" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Id_adress">Введите адресс</label>
+                <input type="text" asp-for="Id_adress" />
+                <span asp-validation-for="Id_adress" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Войти" class="btn" />

@@ -8,5 +8,6 @@ public class User
     public string Password { get; set; }
     public string Name { get; set; }
     public string Role { get; set; }
+    public int Adress { get; set; }
 }
 

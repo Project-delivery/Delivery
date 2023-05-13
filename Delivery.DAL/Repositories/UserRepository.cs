@@ -6,7 +6,7 @@ namespace Delivery.DAL.Repositories;
 
 public class UserRepository
 {
-    private static readonly string ConnectionString = "Host=localhost;port=5432;Username=postgres;Password=998244353sql;Database=test";
+    private static readonly string ConnectionString = "Host=localhost;port=5432;Username=postgres;Password=998244353sql;Database=delivery";
    public static async Task<User> GetUserByName(string name)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
@@ -59,14 +59,15 @@ public class UserRepository
             return false;
         }
         await reader.DisposeAsync();
-        await using var addСommand = new NpgsqlCommand("INSERT INTO users(login, password, role) VALUES ((@p1), (@p2), (@p3))",
+        await using var addСommand = new NpgsqlCommand("INSERT INTO users(login, password, role, id_adress) VALUES ((@p1), (@p2), (@p3), (@p4))",
             dataSource)
         {
             Parameters =
             {
                 new("p1", user.Name),
                 new("p2", user.Password),
-                new("p3", user.Role)
+                new("p3", user.Role),
+                new ("p4", user.Adress)
             }
         };
         await addСommand.ExecuteNonQueryAsync();
