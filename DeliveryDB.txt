@@ -1,0 +1,47 @@
+create database delivery;
+
+\c delivery;
+
+create table regions (
+id serial primary key,
+name varchar(255) unique);
+
+create table districts (
+id serial primary key,
+name varchar(255) not null,
+id_regions integer references regions(id));
+
+create table cities (
+id serial primary key,
+name varchar(255) not null,
+cityCategory varchar(255) null,
+categoryName varchar(255) null,
+id_district integer references districts(id),
+deputatId varchar(255) null);
+
+create table streets (
+id serial primary key,
+name varchar(255) not null,
+streetType varchar(255) null,
+id_city integer references cities(id));
+
+create table adress (
+id serial primary key,
+num_house varchar(255),
+id_street integer references streets(id),
+deputatId varchar(255) null);
+
+create table users (
+id serial primary key,
+login varchar(255) unique not null,
+password varchar(255) not null,
+role varchar(255) not null,
+id_adress integer references adress(id) null);
+
+grant all privileges on database delivery to admin;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "admin";
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO admin;
+
+insert into users (login, password, role) values ('admin', 'admin', 'admin');
