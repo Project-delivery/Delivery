@@ -13,6 +13,13 @@ namespace Delivery.Controllers;
 
 public class AccountController : Controller
 {
+    private readonly ILogger<AccountController> _logger;
+
+    public AccountController(ILogger<AccountController> logger)
+    {
+        _logger = logger;
+    }
+
     [HttpGet]
     [Authorize(Roles = "admin")]
     public IActionResult Register() => View();
