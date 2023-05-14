@@ -14,14 +14,17 @@ namespace Delivery.Controllers;
 public class AccountController : Controller
 {
     [HttpGet]
+    [Authorize(Roles = "admin")]
     public IActionResult Register() => View();
 
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterViewModel model)
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> Register(string Login, string Password, string Role, string Adress)
     {
         if (ModelState.IsValid)
         {
-            var response = await AccountService.Register(model);
+            int Id_Adress = Convert.ToInt32(Adress);
+            var response = await AccountService.Register(Login, Password, Role, Id_Adress);
             if (response.StatusCode == Domain.Enum.StatusCode.OK)
             {
                 return RedirectToAction("Login", "Account");

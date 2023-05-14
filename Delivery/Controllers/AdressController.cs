@@ -8,11 +8,12 @@ namespace Delivery.Controllers;
 
 public class AdressController : Controller
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost]
-    public async Task<IActionResult> GetDistrictsById(int Name)
+    public async Task<IActionResult> GetDistrictsById(string Name)
     {
-        var response = await AdressService.GetDistrictByRegion(Name);
+        int Id = Convert.ToInt32(Name);
+        var response = await AdressService.GetDistrictByRegion(Id);
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
             return Json(response.Data);
@@ -21,6 +22,7 @@ public class AdressController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> GetRegions()
     {
         var response = await AdressService.GetRegion();
@@ -32,18 +34,19 @@ public class AdressController : Controller
         return BadRequest(new { errorText = "Invalid request" });
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpGet]
     public IActionResult GetDistrictsById()
     {
         return View();
     }
 
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     [HttpPost]
-    public async Task<IActionResult> GetCitiesById(int Name)
+    public async Task<IActionResult> GetCitiesById(string Name)
     {
-        var response = await AdressService.GetCitiesByDistrict(Name);
+        int Id = Convert.ToInt32(Name);
+        var response = await AdressService.GetCitiesByDistrict(Id);
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
             return Json(response.Data);
@@ -51,7 +54,7 @@ public class AdressController : Controller
         return BadRequest(new {errorText="Invalid request"});
     }
     
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     [HttpGet]
     public IActionResult GetCitiesById()
     {
@@ -60,9 +63,10 @@ public class AdressController : Controller
 
     [Authorize(Roles = "admin")]
     [HttpPost]
-    public async Task<IActionResult> GetStreetsById(int Name)
+    public async Task<IActionResult> GetStreetsById(string Name)
     {
-        var response = await AdressService.GetStreetsByCity(Name);
+        int Id = Convert.ToInt32(Name);
+        var response = await AdressService.GetStreetsByCity(Id);
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
             return Json(response.Data);
@@ -79,9 +83,10 @@ public class AdressController : Controller
 
     [Authorize(Roles = "admin")]
     [HttpPost]
-    public async Task<IActionResult> GetHouseById(int Id_Street)
+    public async Task<IActionResult> GetHouseById(string Name)
     {
-        var response = await AdressService.GetHouseByStreet(Id_Street);
+        int Id = Convert.ToInt32(Name);
+        var response = await AdressService.GetHouseByStreet(Id);
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
             return Json(response.Data);

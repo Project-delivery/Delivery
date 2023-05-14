@@ -10,11 +10,11 @@ namespace Delivery.Service.Implementation;
 
 public class AccountService
 {
-    public static async Task<BaseResponse<ClaimsIdentity>> Register(RegisterViewModel model)
+    public static async Task<BaseResponse<ClaimsIdentity>> Register(string Login, string Password, string Role, int Id_Adress)
     {
         try
         {
-            var user = await UserRepository.GetUserByName(model.Name);
+            var user = await UserRepository.GetUserByName(Login);
             if (user.Name != null)
             {
                 return new BaseResponse<ClaimsIdentity>()
@@ -25,10 +25,10 @@ public class AccountService
 
             user = new User()
             {
-                Name = model.Name,
-                Role = model.Role,
-                Password = model.Password,
-                Adress = model.Id_adress
+                Name = Login,
+                Role = Role,
+                Password = Password,
+                Adress = Id_Adress
             };
 
             await UserRepository.Create(user);

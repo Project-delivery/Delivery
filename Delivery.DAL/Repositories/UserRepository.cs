@@ -7,7 +7,7 @@ namespace Delivery.DAL.Repositories;
 public class UserRepository
 {
     private static readonly string ConnectionString = "Host=localhost;port=5432;Username=postgres;Password=998244353sql;Database=delivery";
-   public static async Task<User> GetUserByName(string name)
+   public static async Task<User> GetUserByName(string Name)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();
@@ -16,7 +16,7 @@ public class UserRepository
         {
             Parameters =
             {
-                new("p1", name)
+                new("p1", Name)
             }
         };
         await using var reader = await command.ExecuteReaderAsync();
@@ -26,7 +26,7 @@ public class UserRepository
             {
                 Id = reader.GetInt32(0),
                 
-                Name = name,
+                Name = Name,
                 Password = reader.GetString(2),
                 Role = reader.GetString(3)
             };
