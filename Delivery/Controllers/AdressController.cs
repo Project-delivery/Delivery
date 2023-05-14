@@ -41,7 +41,7 @@ public class AdressController : Controller
         return View();
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<IActionResult> GetCitiesById(string Name)
     {
@@ -54,7 +54,7 @@ public class AdressController : Controller
         return BadRequest(new {errorText="Invalid request"});
     }
     
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpGet]
     public IActionResult GetCitiesById()
     {

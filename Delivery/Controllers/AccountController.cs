@@ -19,19 +19,17 @@ public class AccountController : Controller
 
     [HttpPost]
     [Authorize(Roles = "admin")]
-    public async Task<IActionResult> Register(string Login, string Password, string Role, string Adress)
+    public async Task<bool> Register(string Login, string Password, string Role, string Adress)
     {
-        if (ModelState.IsValid)
+
+        int Id_Adress = Convert.ToInt32(Adress);
+        var response = await AccountService.Register(Login, Password, Role, Id_Adress);
+        if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
-            int Id_Adress = Convert.ToInt32(Adress);
-            var response = await AccountService.Register(Login, Password, Role, Id_Adress);
-            if (response.StatusCode == Domain.Enum.StatusCode.OK)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return true;
         }
 
-        return RedirectToAction("Register", "Account");
+        return false;
     }
     
     public IActionResult Login()

@@ -20,6 +20,7 @@ public class AccountService
                 return new BaseResponse<ClaimsIdentity>()
                 {
                     Description = "Пользователь с таким именем уже есть",
+                    StatusCode = StatusCode.InternalServerError
                 };
             }
 
