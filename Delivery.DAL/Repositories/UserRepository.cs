@@ -1,13 +1,11 @@
 ﻿using Delivery.Domain.Entity;
-using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
 namespace Delivery.DAL.Repositories;
 
-public class UserRepository
+public class UserRepository : ApplicationDbContext
 {
-    private static readonly string ConnectionString = "Host=localhost;port=5432;Username=postgres;Password=998244353sql;Database=delivery";
-   public static async Task<User> GetUserByName(string Name)
+    public static async Task<User> GetUserByName(string Name)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();

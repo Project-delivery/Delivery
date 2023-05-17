@@ -11,8 +11,4 @@
       <ProjectReference Include="..\Delivery.Domain\Delivery.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Interfaces" />
-    </ItemGroup>
-
 </Project>

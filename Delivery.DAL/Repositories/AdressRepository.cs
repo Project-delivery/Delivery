@@ -3,110 +3,8 @@ using Npgsql;
 
 namespace Delivery.DAL.Repositories;
 
-public class AdressRepository
+public class AdressRepository : ApplicationDbContext
 {
-    private static readonly string ConnectionString = "Host=localhost;port=5432;Username=postgres;Password=998244353sql;Database=test";
-
-    /*private static async Task<Region> GetRegionByName(string name)
-    {
-        await using var dataSource = new NpgsqlConnection(ConnectionString);
-        dataSource.Open();
-        
-        await using var command = new NpgsqlCommand($"SELECT * FROM regions WHERE name = (@p1)", dataSource)
-        {
-            Parameters =
-            {
-                new("p1", name)
-            }
-        };
-        await using var reader = await command.ExecuteReaderAsync();
-        if (await reader.ReadAsync())
-        {
-            var res = new Region()
-            {
-                Id = reader.GetInt32(0),
-                Name = name
-            };
-            await reader.DisposeAsync();
-            await dataSource.DisposeAsync();
-            return res;
-        }
-        else
-        { 
-            await reader.DisposeAsync();
-            await dataSource.DisposeAsync();
-            return new Region() { Id = -1, Name = null };
-        }
-    }
-    
-    private static async Task<District> GetDistrictByName(string name)
-    {
-        await using var dataSource = new NpgsqlConnection(ConnectionString);
-        dataSource.Open();
-        
-        await using var command = new NpgsqlCommand($"SELECT * FROM districts WHERE name = (@p1)", dataSource)
-        {
-            Parameters =
-            {
-                new("p1", name)
-            }
-        };
-        await using var reader = await command.ExecuteReaderAsync();
-        if (await reader.ReadAsync())
-        {
-            var res = new District()
-            {
-                Id = reader.GetInt32(0),
-                Name = name,
-                Id_regions = reader.GetInt32(2)
-            };
-            await reader.DisposeAsync();
-            await dataSource.DisposeAsync();
-            return res;
-        }
-        else
-        { 
-            await reader.DisposeAsync();
-            await dataSource.DisposeAsync();
-            return new District() { Id = -1, Name = null, Id_regions = -1};
-        }
-    }
-    
-    private static async Task<City> GetCityByName(string name)
-    {
-        await using var dataSource = new NpgsqlConnection(ConnectionString);
-        dataSource.Open();
-        
-        await using var command = new NpgsqlCommand($"SELECT * FROM cities WHERE name = (@p1)", dataSource)
-        {
-            Parameters =
-            {
-                new("p1", name)
-            }
-        };
-        await using var reader = await command.ExecuteReaderAsync();
-        if (await reader.ReadAsync())
-        {
-            var res = new City()
-            {
-                Id = reader.GetInt32(0),
-                Name = name,
-                CategoryName = reader.GetString(3),
-                Id_district = reader.GetInt32(4),
-                DeputatId = reader.GetString(5)
-            };
-            await reader.DisposeAsync();
-            await dataSource.DisposeAsync();
-            return res;
-        }
-        else
-        { 
-            await reader.DisposeAsync();
-            await dataSource.DisposeAsync();
-            return new City() { Id = -1, Name = null, Id_district = -1};
-        }
-    }*/
-    
     public static async Task<List<District> > GetDistrictByRegion(int region)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
@@ -248,4 +146,105 @@ public class AdressRepository
         }
         return res;
     }
+    
+    /*private static async Task<Region> GetRegionByName(string name)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+        
+        await using var command = new NpgsqlCommand($"SELECT * FROM regions WHERE name = (@p1)", dataSource)
+        {
+            Parameters =
+            {
+                new("p1", name)
+            }
+        };
+        await using var reader = await command.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            var res = new Region()
+            {
+                Id = reader.GetInt32(0),
+                Name = name
+            };
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return res;
+        }
+        else
+        { 
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return new Region() { Id = -1, Name = null };
+        }
+    }
+    
+    private static async Task<District> GetDistrictByName(string name)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+        
+        await using var command = new NpgsqlCommand($"SELECT * FROM districts WHERE name = (@p1)", dataSource)
+        {
+            Parameters =
+            {
+                new("p1", name)
+            }
+        };
+        await using var reader = await command.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            var res = new District()
+            {
+                Id = reader.GetInt32(0),
+                Name = name,
+                Id_regions = reader.GetInt32(2)
+            };
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return res;
+        }
+        else
+        { 
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return new District() { Id = -1, Name = null, Id_regions = -1};
+        }
+    }
+    
+    private static async Task<City> GetCityByName(string name)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+        
+        await using var command = new NpgsqlCommand($"SELECT * FROM cities WHERE name = (@p1)", dataSource)
+        {
+            Parameters =
+            {
+                new("p1", name)
+            }
+        };
+        await using var reader = await command.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            var res = new City()
+            {
+                Id = reader.GetInt32(0),
+                Name = name,
+                CategoryName = reader.GetString(3),
+                Id_district = reader.GetInt32(4),
+                DeputatId = reader.GetString(5)
+            };
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return res;
+        }
+        else
+        { 
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return new City() { Id = -1, Name = null, Id_district = -1};
+        }
+    }*/
+    
 }
