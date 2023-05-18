@@ -5,6 +5,28 @@ namespace Delivery.DAL.Repositories;
 
 public class ValidatorRepository : ApplicationDbContext
 {
+    
+    public static async void Create(TempAdress adress)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+        await using var addСommand = new NpgsqlCommand("INSERT INTO temp_adress(region, district, city, street, house, worker_id, is_valid, comment) VALUES ((@p1), (@p2), (@p3), (@p4), (@p5), (@p6), (@p7), (@p8))",
+            dataSource)
+        {
+            Parameters =
+            {
+                new("p1", adress.Region),
+                new("p2", adress.District),
+                new("p3", adress.City),
+                new ("p4", adress.Street),
+                new ("p5", adress.House),
+                new ("p6", adress.Worker_id),
+                new ("p7", adress.Is_valid),
+                new ("p8", adress.Comment)
+            }
+        };
+        await addСommand.ExecuteNonQueryAsync();
+    }
     public static async Task<List<TempAdress>> GetAll(bool isValid = false)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
