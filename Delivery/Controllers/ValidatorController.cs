@@ -6,6 +6,7 @@ using Delivery.Service.Implementation;
 using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Delivery.Controllers;
 
@@ -27,7 +28,16 @@ public class ValidatorController : Controller
         }
         return BadRequest(new {errorText="Invalid request"});
     }
-    
-    
+
+    [Authorize]
+    public async Task<IActionResult> AddNewAdress(int city_Id, string Name, string StreetType)
+    {
+        var response = await ValidatorService.AddNewAdress(city_Id, Name, StreetType);
+        if (response.StatusCode == Domain.Enum.StatusCode.OK)
+        {
+            return Json("OK");
+        }
+        return Json(response.Description);
+    }
     
 }

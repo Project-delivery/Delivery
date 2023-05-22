@@ -27,6 +27,24 @@ public class ValidatorRepository : ApplicationDbContext
         };
         await addСommand.ExecuteNonQueryAsync();
     }
+
+    public static async void AddNewAdress(int Id_city, string Name, string StreetType)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+        await using var addCommand = new NpgsqlCommand(
+            $"INSERT INTO streets (name, streettype, id_city) VALUES ((@p1), (@p2), (@p3))",
+            dataSource)
+        {
+            Parameters =
+            {
+                new("p1", Name),
+                new("p2", StreetType),
+                new("p3", Id_city)
+            }
+        };
+        await addCommand.ExecuteNonQueryAsync();
+    }
     public static async Task<List<TempAdress>> GetAll(bool isValid = false)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
@@ -61,5 +79,42 @@ public class ValidatorRepository : ApplicationDbContext
             );
         }
         return res;
+    }
+
+    public static async Task<Street> GetStreetByName(int idCity, string name, string streetType)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+
+        await using var command = new NpgsqlCommand($"SELECT * FROM streets WHERE id_city = (@p1) AND name = (@p2), AND streettype = (@p3)", dataSource)
+        {
+            Parameters =
+            {
+                new ("p1", idCity),
+                new ("p2", name),
+                new ("p3", streetType)
+            }
+        };
+        await using var reader = await command.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            var res = new Street()
+            {
+                Id = reader.GetInt32(0),
+                
+                Name = name,
+                StreetType = streetType,
+                Id_city = idCity
+            };
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return res;
+        }
+        else
+        { 
+            await reader.DisposeAsync();
+            await dataSource.DisposeAsync();
+            return new Street() { Id = -1, Name = null, StreetType = null, Id_city = -1};
+        }
     }
 }

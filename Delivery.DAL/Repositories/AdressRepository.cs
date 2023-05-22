@@ -5,6 +5,8 @@ namespace Delivery.DAL.Repositories;
 
 public class AdressRepository : ApplicationDbContext
 {
+    
+    
     public static async Task<List<District> > GetDistrictByRegion(int region)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);

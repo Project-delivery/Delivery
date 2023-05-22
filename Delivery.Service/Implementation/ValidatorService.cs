@@ -25,6 +25,38 @@ public class ValidatorService
         ValidatorRepository.Create(tempAdress);
     }
 
+    public static async Task<BaseResponse<string>> AddNewAdress(int Id_city, string Name, string StreetType)
+    {
+        try
+        {
+            var user = await ValidatorRepository.GetStreetByName(Id_city, Name, StreetType);
+            if (user.Name != null)
+            {
+                return new BaseResponse<string>()
+                {
+                    Description = "Такая улица в этом городе уже есть",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+
+            ValidatorRepository.AddNewAdress(Id_city, Name, StreetType);
+            return new BaseResponse<string>()
+            {
+                Data = "OK",
+                Description = "Оъект добавлен",
+                StatusCode = StatusCode.OK
+            };
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<string>()
+            {
+                Description = ex.Message,
+                StatusCode = StatusCode.InternalServerError
+            };
+        }
+    }
+    
     public static async Task<BaseResponse<List<TempAdress>>> GetAll(bool isValid)
     {
         var baseResponse = new BaseResponse<List<TempAdress>>();
