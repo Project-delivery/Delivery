@@ -9,8 +9,16 @@ namespace Delivery.Service.Implementation;
 public class ValidatorService
 {
 
-    public static async void Create(string region, string district, string city, string street, string house, int street_id, bool is_valid, string comment)
+    public static async void Create(string region, string district, string city, string street, string house, int street_id, bool is_valid, string comment, string OldId)
     {
+        Console.WriteLine(region);
+        Console.WriteLine(district);
+        Console.WriteLine(city);
+        Console.WriteLine(street);
+        Console.WriteLine(house);
+        Console.WriteLine(street_id);
+        Console.WriteLine(is_valid);
+        Console.WriteLine(comment);
         TempAdress tempAdress = new TempAdress()
         {
             Region = region,
@@ -23,6 +31,10 @@ public class ValidatorService
             Comment = comment
         };
         ValidatorRepository.Create(tempAdress);
+        if (OldId != "-")
+        {
+            ValidatorRepository.Remove(Convert.ToInt32(OldId));
+        }
     }
 
     public static async Task<BaseResponse<string>> AddNewAdress(int Id_street, string Name, int id)

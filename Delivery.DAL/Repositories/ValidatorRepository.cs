@@ -11,7 +11,7 @@ public class ValidatorRepository : ApplicationDbContext
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();
-        await using var addСommand = new NpgsqlCommand("INSERT INTO temp_adress(region, district, city, street, house, street_id, is_valid, comment) VALUES ((@p1), (@p2), (@p3), (@p4), (@p5), (@p6), (@p7), (@p8))",
+        await using var addСommand = new NpgsqlCommand("INSERT INTO temp_adress(region, district, city, street, house, street_id, is_valid, coment) VALUES ((@p1), (@p2), (@p3), (@p4), (@p5), (@p6), (@p7), (@p8))",
             dataSource)
         {
             Parameters =
@@ -127,4 +127,5 @@ public class ValidatorRepository : ApplicationDbContext
             return new Adress() { Id = -1, NumberHouse = null, Id_Street = -1};
         }
     }
+    
 }

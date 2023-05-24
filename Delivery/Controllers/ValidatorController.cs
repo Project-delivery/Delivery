@@ -14,10 +14,11 @@ namespace Delivery.Controllers;
 public class ValidatorController : Controller
 {
     [HttpPost]
-    [Authorize(Roles = "admin")]
-    public async void Add(string region, string district, string city, string street, string house, int street_id, bool is_valid, string comment)
+    [Authorize]
+    public async void Add(string region, string district, string city, string street, string house, string street_id, string is_valid, string comment, string OldId = "-")
     {
-        ValidatorService.Create(region, district, city, street, house, street_id, is_valid, comment);
+        comment = comment ?? "";
+        ValidatorService.Create(region, district, city, street, house, Convert.ToInt32(street_id), Convert.ToBoolean(is_valid), comment, OldId);
     }
     
     [HttpGet]
@@ -34,9 +35,12 @@ public class ValidatorController : Controller
 
     [HttpPost]
     [Authorize(Roles = "validator")]
-    public async Task<IActionResult> AddNewAdress(int Id_street, string Name, int Id)
+    public async Task<IActionResult> AddNewAdress(string Id_street, string Name, string Id)
     {
-        var response = await ValidatorService.AddNewAdress(Id_street, Name, Id);
+        Console.WriteLine(Id_street);
+        Console.WriteLine(Name);
+        Console.WriteLine(Id);
+        var response = await ValidatorService.AddNewAdress(Convert.ToInt32(Id_street), Name, Convert.ToInt32(Id));
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
             //ValidatorRepository.Remove(Id);
