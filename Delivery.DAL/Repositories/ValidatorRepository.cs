@@ -11,7 +11,7 @@ public class ValidatorRepository : ApplicationDbContext
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();
-        await using var addСommand = new NpgsqlCommand("INSERT INTO temp_adress(region, district, city, street, house, street_id, worker_id, is_valid, comment) VALUES ((@p1), (@p2), (@p3), (@p4), (@p5), (@p6), (@p7), (@p8))",
+        await using var addСommand = new NpgsqlCommand("INSERT INTO temp_adress(region, district, city, street, house, street_id, is_valid, comment) VALUES ((@p1), (@p2), (@p3), (@p4), (@p5), (@p6), (@p7), (@p8))",
             dataSource)
         {
             Parameters =
@@ -21,7 +21,7 @@ public class ValidatorRepository : ApplicationDbContext
                 new("p3", adress.City),
                 new ("p4", adress.Street),
                 new ("p5", adress.House),
-                new ("p6", adress.Worker_id),
+                new ("p6", adress.Street_id),
                 new ("p7", adress.Is_valid),
                 new ("p8", adress.Comment)
             }
@@ -68,17 +68,29 @@ public class ValidatorRepository : ApplicationDbContext
                     City = reader.GetString(i+3),
                     Street = reader.GetString(i+4),
                     House = reader.GetString(i+5),
-                    Worker_id = reader.GetInt32(i+6),
-                    Is_valid = reader.GetBoolean(i+7),
-                    Comment = reader.GetString(i+8)
+                    Is_valid = reader.GetBoolean(i+6),
+                    Comment = reader.GetString(i+7),
+                    Street_id = reader.GetInt32(i+8)
                 }
             );
         }
         return res;
     }
     
-    public static async void Remove(int id) {
-        
+    public static async void Remove(int id)
+    {
+        await using var dataSource = new NpgsqlConnection(ConnectionString);
+        dataSource.Open();
+
+        await using var command = new NpgsqlCommand($"DELETE FROM temp_adress WHERE id = (@p1)", dataSource)
+        {
+            Parameters =
+            {
+                new ("p1", id)
+            }
+        };
+        int reader = await command.ExecuteNonQueryAsync();
+        return;
     }
 
     public static async Task<Adress> GetHouseByName(int idStreet, string name)

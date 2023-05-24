@@ -8,7 +8,7 @@ public class TempAdress
     public string City { get; set; }
     public string Street { get; set; }
     public string House { get; set; }
-    public int Worker_id { get; set; }
+    public int Street_id { get; set; }
     public bool Is_valid { get; set; }
     public string Comment { get; set; }
 }

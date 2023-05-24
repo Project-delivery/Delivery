@@ -15,9 +15,9 @@ public class ValidatorController : Controller
 {
     [HttpPost]
     [Authorize(Roles = "admin")]
-    public async void Add(string region, string district, string city, string street, string house, int worker_id, bool is_valid, string comment)
+    public async void Add(string region, string district, string city, string street, string house, int street_id, bool is_valid, string comment)
     {
-        ValidatorService.Create(region, district, city, street, house, worker_id, is_valid, comment);
+        ValidatorService.Create(region, district, city, street, house, street_id, is_valid, comment);
     }
     
     [HttpGet]
@@ -32,11 +32,11 @@ public class ValidatorController : Controller
         return BadRequest(new {errorText="Invalid request"});
     }
 
-    [HttpGet]
+    [HttpPost]
     [Authorize(Roles = "validator")]
-    public async Task<IActionResult> AddNewAdress(int StreetId, string Name, int Id)
+    public async Task<IActionResult> AddNewAdress(int Id_street, string Name, int Id)
     {
-        var response = await ValidatorService.AddNewAdress(StreetId, Name);
+        var response = await ValidatorService.AddNewAdress(Id_street, Name, Id);
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
             //ValidatorRepository.Remove(Id);

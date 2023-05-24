@@ -9,7 +9,7 @@ namespace Delivery.Service.Implementation;
 public class ValidatorService
 {
 
-    public static async void Create(string region, string district, string city, string street, string house, int worker_id, bool is_valid, string comment)
+    public static async void Create(string region, string district, string city, string street, string house, int street_id, bool is_valid, string comment)
     {
         TempAdress tempAdress = new TempAdress()
         {
@@ -18,20 +18,21 @@ public class ValidatorService
             City = city,
             Street = street,
             House = house,
-            Worker_id = worker_id,
+            Street_id = street_id,
             Is_valid = is_valid,
             Comment = comment
         };
         ValidatorRepository.Create(tempAdress);
     }
 
-    public static async Task<BaseResponse<string>> AddNewAdress(int Id_city, string Name)
+    public static async Task<BaseResponse<string>> AddNewAdress(int Id_street, string Name, int id)
     {
         try
         {
-            var user = await ValidatorRepository.GetHouseByName(Id_city, Name);
+            var user = await ValidatorRepository.GetHouseByName(Id_street, Name);
             if (user.NumberHouse != null)
             {
+                ValidatorRepository.Remove(id);
                 return new BaseResponse<string>()
                 {
                     Description = "Такой дом уже есть",
@@ -39,7 +40,8 @@ public class ValidatorService
                 };
             }
 
-            ValidatorRepository.AddNewAdress(Id_city, Name);
+            ValidatorRepository.AddNewAdress(Id_street, Name);
+            ValidatorRepository.Remove(id);
             return new BaseResponse<string>()
             {
                 Data = "OK",
