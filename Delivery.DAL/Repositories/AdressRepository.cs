@@ -6,7 +6,6 @@ namespace Delivery.DAL.Repositories;
 public class AdressRepository : ApplicationDbContext
 {
     
-    
     public static async Task<List<District> > GetDistrictByRegion(int region)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
@@ -40,7 +39,7 @@ public class AdressRepository : ApplicationDbContext
 
         //District _district = await GetDistrictByName(district);
         
-        await using var command = new NpgsqlCommand($"SELECT * FROM cities WHERE district_id = (@p1)", dataSource)
+        await using var command = new NpgsqlCommand($"SELECT * FROM cities WHERE id_district = (@p1)", dataSource)
         {
             Parameters =
             {
@@ -125,7 +124,7 @@ public class AdressRepository : ApplicationDbContext
         }
         return res;
     }
-
+    
     public static async Task<List<Region>> GetRegions()
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);

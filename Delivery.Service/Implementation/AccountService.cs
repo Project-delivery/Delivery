@@ -93,7 +93,7 @@ public class AccountService
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Role),
             new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
         };
         return new (claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);

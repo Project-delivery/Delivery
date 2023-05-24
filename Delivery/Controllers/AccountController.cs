@@ -30,6 +30,10 @@ public class AccountController : Controller
     {
 
         int Id_Adress = Convert.ToInt32(Adress);
+        Console.WriteLine(Login);
+        Console.WriteLine(Password);
+        Console.WriteLine(Role);
+        Console.WriteLine(Id_Adress);
         var response = await AccountService.Register(Login, Password, Role, Id_Adress);
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
@@ -64,7 +68,7 @@ public class AccountController : Controller
                 var _response = new
                 {
                     access_token = encodedJwt,
-                    Name = response.Data.Name 
+                    Role = response.Data.Name,
                 };
                 return Json(_response);
             }

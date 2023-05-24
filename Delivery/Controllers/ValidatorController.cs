@@ -12,6 +12,7 @@ namespace Delivery.Controllers;
 
 public class ValidatorController : Controller
 {
+    [HttpPost]
     [Authorize(Roles = "admin")]
     public async void Add(string region, string district, string city, string street, string house, int worker_id, bool is_valid, string comment)
     {
@@ -39,5 +40,7 @@ public class ValidatorController : Controller
         }
         return Json(response.Description);
     }
+    
+    
     
 }
