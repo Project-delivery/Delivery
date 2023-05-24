@@ -6,6 +6,7 @@ using Delivery.Service.Implementation;
 using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Delivery.Controllers;
@@ -19,10 +20,11 @@ public class ValidatorController : Controller
         ValidatorService.Create(region, district, city, street, house, worker_id, is_valid, comment);
     }
     
-    [Authorize]
-    public async Task<IActionResult> getAllTempAdresses(bool isValid = false)
+    [HttpGet]
+    //[Authorize]
+    public async Task<IActionResult> getAllTempAdresses()
     {
-        var response = await ValidatorService.GetAll(isValid);
+        var response = await ValidatorService.GetAll();
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
             return Json(response.Data);
@@ -30,12 +32,14 @@ public class ValidatorController : Controller
         return BadRequest(new {errorText="Invalid request"});
     }
 
-    [Authorize]
-    public async Task<IActionResult> AddNewAdress(int city_Id, string Name, string StreetType)
+    [HttpGet]
+    [Authorize(Roles = "validator")]
+    public async Task<IActionResult> AddNewAdress(int StreetId, string Name, int Id)
     {
-        var response = await ValidatorService.AddNewAdress(city_Id, Name, StreetType);
+        var response = await ValidatorService.AddNewAdress(StreetId, Name);
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
+            //ValidatorRepository.Remove(Id);
             return Json("OK");
         }
         return Json(response.Description);

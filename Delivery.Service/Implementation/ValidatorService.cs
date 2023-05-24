@@ -25,21 +25,21 @@ public class ValidatorService
         ValidatorRepository.Create(tempAdress);
     }
 
-    public static async Task<BaseResponse<string>> AddNewAdress(int Id_city, string Name, string StreetType)
+    public static async Task<BaseResponse<string>> AddNewAdress(int Id_city, string Name)
     {
         try
         {
-            var user = await ValidatorRepository.GetStreetByName(Id_city, Name, StreetType);
-            if (user.Name != null)
+            var user = await ValidatorRepository.GetHouseByName(Id_city, Name);
+            if (user.NumberHouse != null)
             {
                 return new BaseResponse<string>()
                 {
-                    Description = "Такая улица в этом городе уже есть",
+                    Description = "Такой дом уже есть",
                     StatusCode = StatusCode.InternalServerError
                 };
             }
 
-            ValidatorRepository.AddNewAdress(Id_city, Name, StreetType);
+            ValidatorRepository.AddNewAdress(Id_city, Name);
             return new BaseResponse<string>()
             {
                 Data = "OK",
@@ -57,12 +57,12 @@ public class ValidatorService
         }
     }
     
-    public static async Task<BaseResponse<List<TempAdress>>> GetAll(bool isValid)
+    public static async Task<BaseResponse<List<TempAdress>>> GetAll()
     {
         var baseResponse = new BaseResponse<List<TempAdress>>();
         try
         {
-            var adresses = await ValidatorRepository.GetAll(isValid);
+            var adresses = await ValidatorRepository.GetAll();
             if (adresses == null)
             {
                 baseResponse.Description = "Нету временных адрессов";

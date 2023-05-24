@@ -6,11 +6,12 @@ namespace Delivery.DAL.Repositories;
 public class ValidatorRepository : ApplicationDbContext
 {
     
+    
     public static async void Create(TempAdress adress)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();
-        await using var addСommand = new NpgsqlCommand("INSERT INTO temp_adress(region, district, city, street, house, worker_id, is_valid, comment) VALUES ((@p1), (@p2), (@p3), (@p4), (@p5), (@p6), (@p7), (@p8))",
+        await using var addСommand = new NpgsqlCommand("INSERT INTO temp_adress(region, district, city, street, house, street_id, worker_id, is_valid, comment) VALUES ((@p1), (@p2), (@p3), (@p4), (@p5), (@p6), (@p7), (@p8))",
             dataSource)
         {
             Parameters =
@@ -28,34 +29,29 @@ public class ValidatorRepository : ApplicationDbContext
         await addСommand.ExecuteNonQueryAsync();
     }
 
-    public static async void AddNewAdress(int Id_city, string Name, string StreetType)
+    public static async void AddNewAdress(int Id_street, string Name)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();
         await using var addCommand = new NpgsqlCommand(
-            $"INSERT INTO streets (name, streettype, id_city) VALUES ((@p1), (@p2), (@p3))",
+            $"INSERT INTO adress (num_house, id_street) VALUES ((@p1), (@p2))",
             dataSource)
         {
             Parameters =
             {
                 new("p1", Name),
-                new("p2", StreetType),
-                new("p3", Id_city)
+                new("p2", Id_street)
             }
         };
         await addCommand.ExecuteNonQueryAsync();
     }
-    public static async Task<List<TempAdress>> GetAll(bool isValid = false)
+    public static async Task<List<TempAdress>> GetAll()
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();
 
-        await using var command = new NpgsqlCommand($"SELECT * FROM temp_adress WHERE is_valid = TRUE OR is_valid = (@p1)", dataSource)
+        await using var command = new NpgsqlCommand($"SELECT * FROM temp_adress WHERE is_valid = FALSE", dataSource)
         {
-            Parameters =
-            {
-                new ("p1", isValid)
-            }
         };
         await using var reader = await command.ExecuteReaderAsync();
         var res = new List<TempAdress>() { };
@@ -80,31 +76,33 @@ public class ValidatorRepository : ApplicationDbContext
         }
         return res;
     }
+    
+    public static async void Remove(int id) {
+        
+    }
 
-    public static async Task<Street> GetStreetByName(int idCity, string name, string streetType)
+    public static async Task<Adress> GetHouseByName(int idStreet, string name)
     {
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();
 
-        await using var command = new NpgsqlCommand($"SELECT * FROM streets WHERE id_city = (@p1) AND name = (@p2), AND streettype = (@p3)", dataSource)
+        await using var command = new NpgsqlCommand($"SELECT * FROM adress WHERE id_street = (@p1) AND name = (@p2)", dataSource)
         {
             Parameters =
             {
-                new ("p1", idCity),
-                new ("p2", name),
-                new ("p3", streetType)
+                new ("p1", idStreet),
+                new ("p2", name)
             }
         };
         await using var reader = await command.ExecuteReaderAsync();
         if (await reader.ReadAsync())
         {
-            var res = new Street()
+            var res = new Adress()
             {
                 Id = reader.GetInt32(0),
                 
-                Name = name,
-                StreetType = streetType,
-                Id_city = idCity
+                NumberHouse = name,
+                Id_Street = idStreet
             };
             await reader.DisposeAsync();
             await dataSource.DisposeAsync();
@@ -114,7 +112,7 @@ public class ValidatorRepository : ApplicationDbContext
         { 
             await reader.DisposeAsync();
             await dataSource.DisposeAsync();
-            return new Street() { Id = -1, Name = null, StreetType = null, Id_city = -1};
+            return new Adress() { Id = -1, NumberHouse = null, Id_Street = -1};
         }
     }
 }
