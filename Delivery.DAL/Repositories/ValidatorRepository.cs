@@ -98,7 +98,7 @@ public class ValidatorRepository : ApplicationDbContext
         await using var dataSource = new NpgsqlConnection(ConnectionString);
         dataSource.Open();
 
-        await using var command = new NpgsqlCommand($"SELECT * FROM adress WHERE id_street = (@p1) AND name = (@p2)", dataSource)
+        await using var command = new NpgsqlCommand($"SELECT * FROM adress WHERE id_street = (@p1) AND num_house = (@p2)", dataSource)
         {
             Parameters =
             {

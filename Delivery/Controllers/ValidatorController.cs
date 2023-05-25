@@ -22,7 +22,7 @@ public class ValidatorController : Controller
     }
     
     [HttpGet]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> getAllTempAdresses()
     {
         var response = await ValidatorService.GetAll();
@@ -43,7 +43,6 @@ public class ValidatorController : Controller
         var response = await ValidatorService.AddNewAdress(Convert.ToInt32(Id_street), Name, Convert.ToInt32(Id));
         if (response.StatusCode == Domain.Enum.StatusCode.OK)
         {
-            //ValidatorRepository.Remove(Id);
             return Json("OK");
         }
         return Json(response.Description);

@@ -39,6 +39,7 @@ public class ValidatorService
 
     public static async Task<BaseResponse<string>> AddNewAdress(int Id_street, string Name, int id)
     {
+
         try
         {
             var user = await ValidatorRepository.GetHouseByName(Id_street, Name);
@@ -52,6 +53,11 @@ public class ValidatorService
                 };
             }
 
+            Console.WriteLine(Id_street);
+            Console.WriteLine(Name);
+            Console.WriteLine(id);
+
+            
             ValidatorRepository.AddNewAdress(Id_street, Name);
             ValidatorRepository.Remove(id);
             return new BaseResponse<string>()

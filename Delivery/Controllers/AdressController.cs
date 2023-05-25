@@ -10,7 +10,7 @@ public class AdressController : Controller
 {
     
     [HttpPost]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public async Task<IActionResult> GetDistrictsById(string Name)
     {
         int Id = Convert.ToInt32(Name);
@@ -26,7 +26,7 @@ public class AdressController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public async Task<IActionResult> GetRegions()
     {
         Console.WriteLine("Вызван получение регионов");
@@ -41,14 +41,14 @@ public class AdressController : Controller
 
     
     [HttpGet]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public IActionResult GetDistrictsById()
     {
         return View();
     }
     
     [HttpPost]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public async Task<IActionResult> GetCitiesById(string Name)
     {
         int Id = Convert.ToInt32(Name);
@@ -64,14 +64,14 @@ public class AdressController : Controller
     }
     
     [HttpGet]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public IActionResult GetCitiesById()
     {
         return View();
     }
     
     [HttpPost]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public async Task<IActionResult> GetStreetsById(string Name)
     {
         int Id = Convert.ToInt32(Name);
@@ -87,14 +87,14 @@ public class AdressController : Controller
     }
     
     [HttpGet]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public IActionResult GetStreetsById()
     {
         return View();
     }
     
     [HttpPost]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public async Task<IActionResult> GetHouseById(string Name)
     {
         int Id = Convert.ToInt32(Name);
@@ -110,7 +110,7 @@ public class AdressController : Controller
     }
     
     [HttpGet]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public IActionResult GetHouseById()
     {
         return View();
