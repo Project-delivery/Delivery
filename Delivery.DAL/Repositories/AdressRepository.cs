@@ -247,5 +247,5 @@ public class AdressRepository : ApplicationDbContext
             return new City() { Id = -1, Name = null, Id_district = -1};
         }
     }*/
-    
+
 }

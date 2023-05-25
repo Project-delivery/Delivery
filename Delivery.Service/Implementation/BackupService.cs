@@ -7,6 +7,12 @@ namespace Delivery.Service.Implementation;
 
 public class BackupService
 {
+    public static async Task<List<TempAdress>?> TempAdressBackup()
+    {
+        List<TempAdress?> Backup = new List<TempAdress?>();
+        Backup = await ValidatorRepository.GetAll();
+        return Backup;
+    }
     public static async Task<List<RegionBackup>?> AdressBackup()
     {
         List<RegionBackup?> Backup = new List<RegionBackup?>();
@@ -26,7 +32,7 @@ public class BackupService
                 List<CityBackup?> citiesList = new List<CityBackup?>();
                 List<City?> Cities = new List<City?>();
                 Cities = await AdressRepository.GetCitiesByDistrict(DistrictId);
-                foreach (var city in Cities)
+                /*foreach (var city in Cities)
                 {
                     //Console.WriteLine(city.Name);
                     int CitiId = city.Id;
@@ -63,7 +69,7 @@ public class BackupService
                         name = city.Name,
                         streetsList = streetList
                     });
-                }
+                }*/
                 districtsList.Add(new DistrictBackup()
                 {
                     citiesList = citiesList,

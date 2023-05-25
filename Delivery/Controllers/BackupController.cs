@@ -6,6 +6,14 @@ namespace Delivery.Controllers;
 
 public class BackupController : Controller
 {
+
+    [HttpPost]
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> TempAdressBackup()
+    {
+        return Json(await BackupService.TempAdressBackup());
+    }
+    
     [HttpPost]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> AdressBackup()
